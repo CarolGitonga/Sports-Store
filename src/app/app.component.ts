@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app',
+  template:"<router-outlet></router-outlet>"
 })
 export class AppComponent {
-  title = 'SportsStore';
+  
 }
+//When the routing feature is used, Angular looks for the router-outlet element, which defines the
+//location in which the component that corresponds to the current URL should be displayed.

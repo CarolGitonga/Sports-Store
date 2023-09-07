@@ -1,0 +1,20 @@
+<!-- This template uses the Cart object provided by its component to display the number of items in the cart and the total cost -->
+<div class="float-right">
+    <small>
+      Your cart:
+      <span *ngIf="cart.itemCount > 0">
+        {{ cart.itemCount }} item(s)
+        {{ cart.cartPrice | currency:"USD":"symbol":"2.2-2" }}
+      </span>
+      <span *ngIf="cart.itemCount == 0">
+        (empty)
+      </span>
+    </small>
+    <!-- The value specified by the routerLink attribute is the URL that the application will navigate to when the
+button is clicked. This particular button is disabled when the cart is empty, so it will perform the navigation
+only when the user has added a product to the cart. -->
+    <button class="btn btn-sm bg-dark text-white"
+        [disabled]="cart.itemCount == 0" routerLink="/cart">
+      <i class="fa fa-shopping-cart"></i>
+    </button>
+  </div>

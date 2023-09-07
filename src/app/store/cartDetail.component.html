@@ -1,0 +1,79 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col bg-dark text-white">
+        <a class="navbar-brand">SPORTS STORE</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col mt-2">
+        <h2 class="text-center">Your Cart</h2>
+        <table class="table table-bordered table-striped p-2">
+          <thead>
+            <tr>
+              <th>Quantity</th>
+              <th>Product</th>
+              <th class="text-right">Price</th>
+              <th class="text-right">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="cart.lines.length == 0">
+              <td colspan="4" class="text-center">
+                Your cart is empty
+              </td>
+            </tr>
+            <tr *ngFor="let line of cart.lines">
+              <td>
+                <input type="number" class="form-control-sm"
+                       style="width:5em"
+                       [value]="line.quantity"
+                       (change)="cart.updateQuantity(line.product,$any($event.target).value)" />
+              </td>
+              <td>{{line.product.name}}</td>
+              <td class="text-right">
+                  {{line.product.price | currency:"USD":"symbol":"2.2-2"}}
+              </td>
+              <td class="text-right">
+                  {{(line.lineTotal) | currency:"USD":"symbol":"2.2-2" }}
+              </td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-danger"
+                        (click)="cart.removeLine(line.product.id)">
+                  Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="text-right">Total:</td>
+              <td class="text-right">
+                {{cart.cartPrice | currency:"USD":"symbol":"2.2-2"}}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    
+    <div class="row">
+      <div class="col">
+      <div class="text-center">
+        <button class="btn btn-primary m-1" routerLink="/store">
+            Continue Shopping
+        </button>
+        <button class="btn btn-secondary m-1" routerLink="/checkout"
+                [disabled]="cart.lines.length == 0 || !connected">
+                {{ connected ? 'Checkout': 'Offline'}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- This template displays a table showing the user’s product selections. For each product, there is an input
+element that can be used to change the quantity, and there is a Remove button that deletes it from the cart.
+There are also two navigation buttons that allow the user to return to the list of products or continue to the
+checkout process. The combination of the Angular data bindings and the shared Cart object means that any changes made to the cart take immediate effect, 
+recalculating the prices; and if you click the Continue Shopping button, the changes are reflected in the cart summary component shown
+above the list of products. -->

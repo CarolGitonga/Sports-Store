@@ -1,0 +1,80 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col bg-dark text-white">
+        <a class="navbar-brand">SPORTS STORE</a>
+
+ <!-- adds the element that will apply the cart summary component to the store component’s template and adds a button to each product
+description with the event binding that calls the addProductToCart method. -->
+        <cart-summary></cart-summary>
+      </div>
+    </div>
+ 
+<!--an event binding that invokes the component’s changeCategory method when the button is clicked. No argument
+is provided to the method, which has the effect of setting the category to null and selecting all the products. -->
+    <div class="row">
+      <div class="col-3 p-2">
+        <button class="btn btn-block btn-outline-primary" (click)="changeCategory()">
+          Home
+        </button>
+
+<!-- The ngFor binding has been applied to the other button element, with an expression that will repeat 
+the element for each value in the array returned by the component’s categories property. The button has
+a click event binding whose expression calls the changeCategory method to select the current category,
+which will filter the products displayed to the user. There is also a class binding, which adds the button
+element to the active class when the category associated with the button is the selected category. -->
+        <button *ngFor="let cat of categories" 
+             class="btn btn-outline-primary btn-block"
+             [class.active]="cat == selectedCategory" (click)="changeCategory(cat)">
+          {{cat}}
+        </button>
+        <button class="btn btn-block btn-danger mt-5" routerLink="/admin">
+          Admin
+        </button>
+      </div>
+      
+      <!-- ngFor transforms the div element by duplicating it for each object returned by the component’s products property. -->
+      <div class="col-9 p-2">
+        <div *ngFor="let product of products" class="card m-1 p-1 bg-light">
+          <h4>
+            {{product.name}}
+            <span class="badge badge-pill badge-primary float-right">
+              {{ product.price | currency:"USD":"symbol":"2.2-2" }}
+            </span>
+          </h4>
+          <div class="card-text bg-white p-1">
+            {{product.description}}
+ <!-- Notice how clicking one of the Add To Cart buttons updates the summary component’s content
+automatically. This happens because there is a single Cart object being shared between two components
+and changes made by one component are reflected when Angular evaluates the data binding expressions in the other component. -->
+            <button class="btn btn-success btn-sm float-right"
+                    (click)="addProductToCart(product)">
+                 Add To Cart   
+            </button>
+          </div>
+        </div>
+
+        <!-- The new elements add a select element that allows the size of the page to be changed and a set of
+        buttons that navigate through the product pages. The new elements have data bindings to wire them up to
+        the properties and methods provided by the component. -->
+        <div class="form-inline float-left mr-1">
+          <select class="form-control" [value]="productsPerPage" 
+          (change)="changePageSize($any($event.target).value)">       
+            <option value="3">3 per Page</option>
+            <option value="4">4 per Page</option>
+            <option value="6">6 per Page</option>
+            <option value="8">8 per Page</option>
+          </select>
+        </div>
+        
+  <!-- The new data binding relies on a property called pageCount to configure the custom directive.
+I have replaced the array of numbers with a simple number that provides the expression value. -->
+        <div class="btn-group float-right">
+          <button *counter="let page of pageCount" (click)="changePage(page)"
+              class="btn btn-outline-primary" [class.active]="page == selectedPage">
+            {{page}}
+          </button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
